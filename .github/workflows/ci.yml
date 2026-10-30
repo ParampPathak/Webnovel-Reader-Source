@@ -1,0 +1,47 @@
+name: Source checks
+on: [push, pull_request]
+permissions:
+  contents: read
+concurrency:
+  group: source-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg espeak-ng
+      - run: pip install -r requirements.txt
+      - name: Python syntax
+        run: python -m compileall -q -x '/\.git/' .
+      - name: Isolated backend and security regressions
+        env:
+          START_TTS_WORKERS: '0'
+          AUDIO_CACHE_CLEANUP_ENABLED: '0'
+          CHAPTER_UPDATES_ENABLED: '0'
+        run: python -m unittest discover -s tests -t .
+      - name: JavaScript tests
+        run: node --test tests/js/*.test.cjs
+      - name: JavaScript syntax
+        run: for file in static/*.js; do node --check "$file"; done
+      - name: Tracked-file security checks
+        run: python deployment/check_tracked_files.py
+      - name: Docker source completeness
+        run: docker build -t webnovel-ci .
+  native-core:
+    runs-on: macos-15
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Portable Swift checkpoint and trust tests
+        run: swift test --package-path NativeReader
+      - name: Unsigned iOS compile (no Apple credentials)
+        run: xcodebuild build -project NativeReader/WebnovelReader.xcodeproj -scheme WebnovelReader -configuration Release -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO NATIVE_BACKEND_URL=https://reader.example.invalid

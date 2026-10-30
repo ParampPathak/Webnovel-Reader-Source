@@ -1,0 +1,3 @@
+// Shared safe defaults; private origin and existing team stay local.
+NATIVE_BACKEND_URL = https:/$()/reader.example.invalid
+#include? "Local.xcconfig"

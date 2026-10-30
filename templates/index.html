@@ -1,0 +1,1960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b0d12">
+<title>Webnovel Audio</title>
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0b0d12;
+    --surface: #12151d;
+    --surface-2: #171b25;
+    --surface-3: #1e2330;
+    --border: #282f3e;
+    --border-strong: #364052;
+    --text: #f7f8fb;
+    --muted: #9aa4b5;
+    --soft: #6f7b8e;
+    --accent: #8b5cf6;
+    --accent-2: #a78bfa;
+    --accent-bg: rgba(139, 92, 246, 0.14);
+    --good: #34d399;
+    --good-bg: rgba(52, 211, 153, 0.12);
+    --warn: #fbbf24;
+    --warn-bg: rgba(251, 191, 36, 0.12);
+    --danger: #fb7185;
+    --danger-bg: rgba(251, 113, 133, 0.12);
+    --shadow: 0 18px 60px rgba(0, 0, 0, 0.28);
+    --radius: 18px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at top left, rgba(139, 92, 246, 0.10), transparent 32rem),
+      radial-gradient(circle at top right, rgba(59, 130, 246, 0.07), transparent 28rem),
+      var(--bg);
+    color: var(--text);
+    font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  button, input, select, textarea { font: inherit; }
+  button { color: inherit; }
+  a { color: inherit; text-decoration: none; }
+
+  .app-shell {
+    width: min(1120px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 34px 0 150px;
+  }
+
+  .topbar {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 24px;
+  }
+
+  .brand-row { display: flex; align-items: center; gap: 13px; }
+
+  .brand-mark {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    background: linear-gradient(145deg, rgba(139, 92, 246, 0.26), rgba(139, 92, 246, 0.08));
+    border: 1px solid rgba(167, 139, 250, 0.34);
+    font-size: 22px;
+    box-shadow: inset 0 1px rgba(255,255,255,.06);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(25px, 3vw, 34px);
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+  }
+
+  .subtitle {
+    margin: 7px 0 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .engine-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 38px;
+    padding: 0 13px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: rgba(18, 21, 29, 0.86);
+    color: var(--muted);
+    white-space: nowrap;
+    font-size: 13px;
+  }
+
+  .engine-pill .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--good);
+    box-shadow: 0 0 0 4px rgba(52,211,153,.10);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(320px, .65fr);
+    gap: 16px;
+    align-items: start;
+  }
+
+  .card {
+    background: linear-gradient(180deg, rgba(23, 27, 37, .96), rgba(18, 21, 29, .96));
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+
+  .card-body { padding: 22px; }
+
+  .eyebrow {
+    margin: 0 0 8px;
+    color: var(--accent-2);
+    font-size: 12px;
+    font-weight: 750;
+    text-transform: uppercase;
+    letter-spacing: .11em;
+  }
+
+  .card-title {
+    margin: 0;
+    font-size: 19px;
+    letter-spacing: -.02em;
+  }
+
+  .card-copy {
+    margin: 7px 0 18px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .input-wrap { position: relative; }
+
+  textarea, select, input[type="search"], input[type="number"] {
+    width: 100%;
+    color: var(--text);
+    background: #0f1219;
+    border: 1px solid var(--border);
+    outline: none;
+    transition: border-color .16s ease, box-shadow .16s ease, background .16s ease;
+  }
+
+  textarea:focus, select:focus, input:focus {
+    border-color: rgba(139,92,246,.82);
+    box-shadow: 0 0 0 3px rgba(139,92,246,.12);
+    background: #10131b;
+  }
+
+  textarea {
+    min-height: 112px;
+    resize: vertical;
+    padding: 14px 15px;
+    border-radius: 13px;
+    line-height: 1.5;
+  }
+
+  textarea::placeholder, input::placeholder { color: #647083; }
+
+  .queue-options {
+    display: grid;
+    grid-template-columns: 1fr 132px auto;
+    gap: 10px;
+    align-items: end;
+    margin-top: 12px;
+  }
+
+  .field label {
+    display: block;
+    margin: 0 0 7px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 650;
+  }
+
+  select, input[type="number"], input[type="search"] {
+    height: 42px;
+    padding: 0 11px;
+    border-radius: 11px;
+  }
+
+  .hint {
+    margin-top: 10px;
+    color: var(--soft);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .primary-btn, .secondary-btn, .ghost-btn, .player-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    line-height: 1;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: transform .12s ease, background .16s ease, border-color .16s ease, opacity .16s ease;
+  }
+
+  .primary-btn:active, .secondary-btn:active, .ghost-btn:active, .player-btn:active { transform: translateY(1px); }
+  button:disabled { opacity: .48; cursor: not-allowed; }
+
+  .primary-btn {
+    height: 42px;
+    padding: 0 17px;
+    border-radius: 11px;
+    background: linear-gradient(135deg, #7c3aed, #8b5cf6);
+    color: white;
+    font-weight: 750;
+    box-shadow: 0 8px 24px rgba(124, 58, 237, .24);
+  }
+
+  .primary-btn:hover:not(:disabled) { background: linear-gradient(135deg, #8b5cf6, #9f67ff); }
+
+  .secondary-btn {
+    height: 38px;
+    padding: 0 13px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--surface-3);
+    color: #dce1ea;
+    font-size: 13px;
+    font-weight: 650;
+  }
+
+  .secondary-btn:hover:not(:disabled) { border-color: var(--border-strong); background: #242b39; }
+
+  .settings-grid { display: grid; gap: 14px; }
+
+  .engine-help {
+    min-height: 44px;
+    padding: 11px 12px;
+    border-radius: 11px;
+    background: rgba(139,92,246,.08);
+    border: 1px solid rgba(139,92,246,.18);
+    color: #c8c2db;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .save-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-top: 2px;
+  }
+
+  .saved-state { color: var(--good); font-size: 12px; min-height: 18px; }
+
+  .switch-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .switch-copy strong { display: block; font-size: 13px; }
+  .switch-copy span { display: block; color: var(--soft); font-size: 11px; margin-top: 2px; }
+
+  .switch {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    flex: 0 0 auto;
+  }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch-track {
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: #303746;
+    border: 1px solid #3a4354;
+    cursor: pointer;
+    transition: .18s ease;
+  }
+  .switch-track::after {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    left: 2px;
+    top: 2px;
+    border-radius: 50%;
+    background: white;
+    transition: .18s ease;
+  }
+  .switch input:checked + .switch-track { background: var(--accent); border-color: var(--accent); }
+  .switch input:checked + .switch-track::after { transform: translateX(20px); }
+
+
+  .browse-launch-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 10px;
+  }
+  .browse-launch-row span { color: var(--soft); font-size: 11px; line-height: 1.4; }
+  .browser-panel {
+    margin-top: 18px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: linear-gradient(180deg, rgba(23,27,37,.96), rgba(18,21,29,.96));
+    box-shadow: var(--shadow);
+  }
+  .browser-panel[hidden] { display: none; }
+  .browser-toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 8px;
+    padding: 14px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,.012);
+  }
+  .browser-toolbar input {
+    width: 100%;
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 10px;
+    color: var(--text);
+    background: #0f1219;
+    border: 1px solid var(--border);
+    outline: none;
+  }
+  .browser-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 13px 15px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .browser-meta strong { color: #edf0f5; font-size: 13px; }
+  .browser-links {
+    max-height: 360px;
+    overflow: auto;
+    padding: 0 10px 10px;
+  }
+  .browser-link-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+    min-height: 52px;
+    padding: 8px 8px 8px 12px;
+    border-top: 1px solid rgba(40,47,62,.62);
+  }
+  .browser-link-row:first-child { border-top: 0; }
+  .browser-link-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #e8ebf1;
+    font-size: 12px;
+    font-weight: 620;
+  }
+  .browser-link-url {
+    margin-top: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--soft);
+    font-size: 10px;
+  }
+  .browser-link-actions { display: flex; align-items: center; gap: 6px; }
+  .listen-now-chip {
+    display: inline-flex;
+    align-items: center;
+    height: 21px;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: rgba(52,211,153,.12);
+    color: #71e3bb;
+    font-size: 10px;
+    font-weight: 750;
+  }
+
+  .queue-section { margin-top: 26px; }
+
+  .queue-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+
+  .queue-heading { display: flex; align-items: baseline; gap: 10px; }
+  .queue-heading h2 { margin: 0; font-size: 20px; letter-spacing: -.025em; }
+  .queue-count { color: var(--soft); font-size: 12px; }
+  .queue-tools { display: flex; align-items: center; gap: 8px; }
+  .queue-tools input { width: 220px; }
+
+  .empty-state {
+    padding: 40px 24px;
+    text-align: center;
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius);
+    background: rgba(18,21,29,.54);
+    color: var(--muted);
+  }
+  .empty-state strong { display: block; color: #dce1ea; margin-bottom: 6px; }
+
+  .novel-card {
+    margin-bottom: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: rgba(18, 21, 29, .9);
+  }
+
+  .novel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 16px 14px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,.012);
+  }
+
+  .novel-name {
+    min-width: 0;
+  }
+  .novel-name strong {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 15px;
+  }
+  .novel-name span { display: block; margin-top: 4px; color: var(--soft); font-size: 11px; }
+
+  .novel-actions { display: flex; gap: 7px; flex: 0 0 auto; }
+
+  .chapter-list { display: grid; }
+
+  .chapter-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 14px;
+    align-items: center;
+    min-height: 68px;
+    padding: 12px 14px 12px 16px;
+    border-bottom: 1px solid rgba(40,47,62,.72);
+    transition: background .14s ease;
+  }
+  .chapter-row:last-child { border-bottom: 0; }
+  .chapter-row:hover { background: rgba(255,255,255,.018); }
+  .chapter-row.playing { background: rgba(139,92,246,.09); box-shadow: inset 3px 0 var(--accent); }
+
+  .chapter-main { display: flex; min-width: 0; align-items: center; gap: 12px; }
+
+  .status-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    flex: 0 0 auto;
+    background: #586174;
+  }
+  .status-dot.ready { background: var(--good); box-shadow: 0 0 0 4px var(--good-bg); }
+  .status-dot.processing { background: var(--warn); box-shadow: 0 0 0 4px var(--warn-bg); animation: pulse 1.25s infinite; }
+  .status-dot.failed { background: var(--danger); box-shadow: 0 0 0 4px var(--danger-bg); }
+  @keyframes pulse { 50% { opacity: .45; } }
+
+  .chapter-text { min-width: 0; }
+  .chapter-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #edf0f5;
+    font-size: 13px;
+    font-weight: 650;
+  }
+  .chapter-meta {
+    margin-top: 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--soft);
+    font-size: 11px;
+  }
+
+  .chapter-actions { display: flex; align-items: center; gap: 4px; }
+
+  .icon-btn {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #aeb7c6;
+    cursor: pointer;
+  }
+  .icon-btn:hover { background: var(--surface-3); border-color: var(--border); color: white; }
+  .icon-btn.danger:hover { background: var(--danger-bg); border-color: rgba(251,113,133,.22); color: #fda4af; }
+
+  .status-chip {
+    display: inline-flex;
+    align-items: center;
+    height: 21px;
+    padding: 0 8px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 750;
+    text-transform: capitalize;
+  }
+  .status-chip.pending { background: #242a36; color: #9da8b8; }
+  .status-chip.processing { background: var(--warn-bg); color: #f8cf5d; }
+  .status-chip.ready { background: var(--good-bg); color: #71e3bb; }
+  .status-chip.failed { background: var(--danger-bg); color: #fda4af; }
+
+  .generation-progress {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: min(360px, 100%);
+    margin-top: 7px;
+  }
+  .generation-progress-track {
+    position: relative;
+    flex: 1 1 auto;
+    height: 5px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #292f3c;
+  }
+  .generation-progress-fill {
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #7c3aed, #a78bfa);
+    transition: width .35s ease;
+  }
+  .generation-progress-value {
+    flex: 0 0 34px;
+    color: #aeb7c6;
+    font-size: 10px;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+
+  .player-shell {
+    position: fixed;
+    left: 50%;
+    bottom: 16px;
+    z-index: 20;
+    width: min(1056px, calc(100% - 32px));
+    transform: translateX(-50%);
+    border: 1px solid rgba(54,64,82,.92);
+    border-radius: 18px;
+    background: rgba(16, 19, 27, .94);
+    box-shadow: 0 20px 80px rgba(0,0,0,.54);
+    backdrop-filter: blur(18px);
+    overflow: hidden;
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 5px;
+    display: block;
+    margin: 0;
+    appearance: none;
+    background: #292f3c;
+    cursor: pointer;
+  }
+  .progress-track::-webkit-slider-thumb {
+    appearance: none;
+    width: 0;
+    height: 0;
+  }
+  .progress-track::-moz-range-thumb { width: 0; height: 0; border: 0; }
+
+  .player-main {
+    display: grid;
+    grid-template-columns: minmax(180px, 1fr) auto minmax(180px, 1fr);
+    align-items: center;
+    gap: 18px;
+    min-height: 82px;
+    padding: 12px 16px;
+  }
+
+  .now-playing { min-width: 0; }
+  .now-label { color: var(--soft); font-size: 10px; text-transform: uppercase; letter-spacing: .1em; font-weight: 750; }
+  .now-title { margin-top: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px; font-weight: 700; }
+  .now-subtitle { margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--soft); font-size: 11px; }
+
+  .transport { display: flex; align-items: center; gap: 7px; }
+  .player-btn {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: transparent;
+    color: #c5ccd8;
+    font-size: 13px;
+  }
+  .player-btn:hover { background: var(--surface-3); color: white; }
+  .player-btn.play {
+    width: 46px;
+    height: 46px;
+    background: white;
+    color: #11141b;
+    font-size: 16px;
+    font-weight: 800;
+  }
+  .player-btn.play:hover { background: #eef0f4; }
+
+  .player-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 9px;
+  }
+  .time-readout { color: var(--soft); font-variant-numeric: tabular-nums; font-size: 11px; white-space: nowrap; }
+  .speed-select { width: 78px; height: 36px; }
+  .live-voice-select { width: 190px; height: 36px; }
+
+  .toast-stack {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    z-index: 50;
+    display: grid;
+    gap: 8px;
+    width: min(360px, calc(100% - 36px));
+  }
+  .toast {
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--border-strong);
+    background: #171b25;
+    box-shadow: var(--shadow);
+    color: #e8ebf1;
+    font-size: 12px;
+    line-height: 1.45;
+    animation: toastIn .18s ease-out;
+  }
+  .toast.error { border-color: rgba(251,113,133,.34); background: #24171d; }
+  .toast.success { border-color: rgba(52,211,153,.30); background: #14211e; }
+  @keyframes toastIn { from { opacity: 0; transform: translateY(-6px); } }
+
+  .spinner {
+    width: 14px;
+    height: 14px;
+    display: inline-block;
+    border: 2px solid rgba(255,255,255,.25);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+    vertical-align: -2px;
+    margin-right: 7px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @media (max-width: 820px) {
+    .grid { grid-template-columns: 1fr; }
+    .queue-options { grid-template-columns: 1fr 120px; }
+    .queue-options .primary-btn { grid-column: 1 / -1; }
+    .player-main { grid-template-columns: 1fr auto; gap: 10px; }
+    .transport { grid-row: 2; grid-column: 1 / -1; justify-content: center; }
+    .player-right { align-self: start; }
+  }
+
+  @media (max-width: 620px) {
+    .app-shell { width: min(100% - 20px, 1120px); padding-top: 20px; padding-bottom: 178px; }
+    .topbar { align-items: center; }
+    .subtitle { max-width: 260px; }
+    .engine-pill { display: none; }
+    .card-body { padding: 17px; }
+    .queue-toolbar { align-items: stretch; flex-direction: column; }
+    .browser-toolbar { grid-template-columns: 1fr; }
+    .browser-link-row { grid-template-columns: minmax(0,1fr); }
+    .browser-link-actions { justify-content: flex-start; }
+    .queue-tools, .queue-tools input { width: 100%; }
+    .novel-header { align-items: flex-start; flex-direction: column; }
+    .novel-actions { width: 100%; overflow-x: auto; padding-bottom: 2px; }
+    .chapter-row { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+    .chapter-actions { padding-left: 21px; }
+    .player-shell { bottom: 8px; width: calc(100% - 16px); border-radius: 15px; }
+    .player-main { min-height: 126px; padding: 10px 12px 12px; }
+    .now-subtitle { display: none; }
+    .player-right { gap: 6px; }
+    .time-readout { display: none; }
+    .speed-select { width: 72px; }
+    .live-voice-select { width: 132px; }
+  }
+</style>
+</head>
+<body>
+<a href="/importer" style="display:block;padding:12px 24px;color:#b7d7bd">Unlimited webnovel importer · Background jobs</a>
+<a href="/library" style="display:block;padding:12px 24px;color:#b7d7bd">← Book library and EPUB reader</a>
+<div class="app-shell">
+  <header class="topbar">
+    <div class="brand-row">
+      <div class="brand-mark" aria-hidden="true">◖</div>
+      <div>
+        <h1>Webnovel Audio</h1>
+        <p class="subtitle">Queue chapters, generate locally, and listen continuously.</p>
+      </div>
+    </div>
+    <div class="engine-pill" id="enginePill"><span class="dot"></span><span>Loading engine…</span></div>
+  </header>
+
+  <div class="grid">
+    <section class="card">
+      <div class="card-body">
+        <p class="eyebrow">Add chapters</p>
+        <h2 class="card-title">Paste a chapter URL</h2>
+        <p class="card-copy">Paste a chapter from most public novel sites. With one URL, Webnovel Audio follows the site's next-chapter links; with several URLs, it queues those exact pages. Sites protected by a Cloudflare-style "checking your browser" challenge can't be scraped statically and will show a clear error instead of hanging.</p>
+
+        <div class="input-wrap">
+          <label for="urlInput" class="sr-only">Chapter URLs</label>
+          <textarea id="urlInput" spellcheck="false" placeholder="https://novel-site.example/book/chapter-123&#10;&#10;Paste one URL to browse that site, or several URLs to queue them directly."></textarea>
+        </div>
+        <div class="browse-launch-row">
+          <button class="secondary-btn" id="browseButton" type="button">Browse website chapters</button>
+          <span>Loads chapter links inside Webnovel Audio so you can queue them with one click.</span>
+        </div>
+
+        <div class="queue-options">
+          <div class="field">
+            <label for="followCount">When one URL is pasted</label>
+            <input id="followCount" type="number" min="1" value="10" aria-label="Chapters to follow">
+          </div>
+          <div class="field">
+            <label for="queueMode">Behavior</label>
+            <select id="queueMode">
+              <option value="follow" selected>Follow next</option>
+              <option value="exact">Exact URL only</option>
+            </select>
+          </div>
+          <button class="primary-btn" id="queueButton" type="button">Queue chapters</button>
+        </div>
+        <div class="hint">Press Ctrl+Enter to queue. Supports public HTML chapter pages across novel sites; pages that require login, JavaScript rendering, or anti-bot challenges may not be readable automatically.</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-body">
+        <p class="eyebrow">Audio settings</p>
+        <h2 class="card-title">Voices and playback</h2>
+        <p class="card-copy">Piper is the normal playback engine. As soon as Piper finishes the first audio chunk, you can listen while the rest keeps generating. Device/browser speech is only an optional emergency fallback.</p>
+
+        <div class="settings-grid">
+          <div class="field">
+            <label for="engineSelect">Download / background TTS engine</label>
+            <select id="engineSelect">
+              <option value="piper">Piper · Fast streaming (default)</option>
+              <option value="espeak">eSpeak NG · Very fast, robotic</option>
+              <option value="kokoro">Kokoro · Most natural, heaviest</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="voiceSelect">Download / queued audio voice</label>
+            <select id="voiceSelect"><option>Loading voices…</option></select>
+          </div>
+
+          <div class="engine-help" id="engineHelp">Piper is the default. Playback starts from the first generated Piper chunk instead of waiting for the whole chapter.</div>
+
+          <div class="switch-row">
+            <div class="switch-copy">
+              <strong>Device voice fallback</strong>
+              <span>Optional. Uses your browser/phone voices only while Piper audio is not ready. Leave this off if you only want Piper.</span>
+            </div>
+            <label class="switch">
+              <input id="livePlaybackToggle" type="checkbox">
+              <span class="switch-track"></span>
+            </label>
+          </div>
+
+          <div class="field">
+            <label for="settingsSpeed">Default playback speed</label>
+            <select id="settingsSpeed">
+              <option value="0.75">0.75×</option>
+              <option value="1">1×</option>
+              <option value="1.25">1.25×</option>
+              <option value="1.5">1.5×</option>
+              <option value="1.75">1.75×</option>
+              <option value="2">2×</option>
+              <option value="2.5">2.5×</option>
+              <option value="3">3×</option>
+            </select>
+          </div>
+
+          <div class="switch-row">
+            <div class="switch-copy">
+              <strong>Auto-play next</strong>
+              <span>Waits for the next queued chapter if needed.</span>
+            </div>
+            <label class="switch">
+              <input id="autoplayToggle" type="checkbox" checked>
+              <span class="switch-track"></span>
+            </label>
+          </div>
+
+          <div class="save-row">
+            <div class="saved-state" id="savedState"></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end">
+              <button class="secondary-btn" id="applyQueueVoiceButton" type="button" title="Apply this generation voice to chapters still waiting in the queue">Apply to queued</button>
+              <button class="secondary-btn" id="saveSettingsButton" type="button">Save defaults</button>
+            </div>
+          </div>
+          <div class="hint">Changing playback speed never restarts Piper audio. With the optional device-voice fallback, a new speed/voice takes effect on the next short spoken phrase. “Apply to queued” changes pending/failed generation jobs.</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="browser-panel" id="browserPanel" hidden>
+    <div class="browser-toolbar">
+      <input id="browserAddress" type="url" spellcheck="false" placeholder="https://novel-site.example/..." aria-label="Website address">
+      <button class="secondary-btn" id="browserGoButton" type="button">Load page</button>
+      <button class="secondary-btn" id="browserCloseButton" type="button">Close</button>
+    </div>
+    <div class="browser-meta">
+      <div><strong id="browserTitle">Website browser</strong><div id="browserSummary">Paste a novel or chapter page to find chapter links.</div></div>
+      <a class="secondary-btn" id="browserOpenSource" href="#" target="_blank" rel="noopener">Open original</a>
+    </div>
+    <div class="browser-links" id="browserLinks"></div>
+  </section>
+
+  <section class="queue-section">
+    <div class="queue-toolbar">
+      <div class="queue-heading">
+        <h2>Library & queue</h2>
+        <span class="queue-count" id="queueCount">0 chapters</span>
+      </div>
+      <div class="queue-tools">
+        <input type="search" id="queueSearch" placeholder="Filter chapters…" aria-label="Filter chapters">
+        <button class="secondary-btn" id="playFirstButton" type="button">Play first playable</button>
+      </div>
+    </div>
+    <div id="queue"></div>
+  </section>
+</div>
+
+<div class="player-shell" id="playerShell">
+  <input id="progress" class="progress-track" type="range" min="0" max="1000" value="0" aria-label="Playback position">
+  <div class="player-main">
+    <div class="now-playing">
+      <div class="now-label">Now playing</div>
+      <div class="now-title" id="nowTitle">Nothing playing</div>
+      <div class="now-subtitle" id="nowSubtitle">Choose a ready chapter from the queue.</div>
+    </div>
+
+    <div class="transport">
+      <button class="player-btn" id="prevButton" type="button" title="Previous chapter" aria-label="Previous chapter">│◀</button>
+      <button class="player-btn" id="backButton" type="button" title="Back 15 seconds" aria-label="Back 15 seconds">−15</button>
+      <button class="player-btn play" id="playButton" type="button" title="Play" aria-label="Play">▶</button>
+      <button class="player-btn" id="forwardButton" type="button" title="Forward 15 seconds" aria-label="Forward 15 seconds">+15</button>
+      <button class="player-btn" id="nextButton" type="button" title="Next chapter" aria-label="Next chapter">▶│</button>
+    </div>
+
+    <div class="player-right">
+      <span class="time-readout" id="timeReadout">0:00 / 0:00</span>
+      <label for="liveVoiceSelect" class="sr-only">Instant listening voice</label>
+      <select id="liveVoiceSelect" class="live-voice-select" title="Device fallback voice"><option value="">System voice</option></select>
+      <label for="speedSelect" class="sr-only">Playback speed</label>
+      <select id="speedSelect" class="speed-select" title="Playback speed">
+        <option value="0.75">0.75×</option>
+        <option value="1">1×</option>
+        <option value="1.25">1.25×</option>
+        <option value="1.5">1.5×</option>
+        <option value="1.75">1.75×</option>
+        <option value="2">2×</option>
+        <option value="2.5">2.5×</option>
+        <option value="3">3×</option>
+      </select>
+      <button class="icon-btn" id="downloadCurrentButton" type="button" title="Download current chapter" aria-label="Download current chapter">↓</button>
+    </div>
+  </div>
+  <audio id="player" preload="metadata"></audio>
+</div>
+
+<div class="toast-stack" id="toasts" aria-live="polite"></div>
+
+<script>
+  const player = document.getElementById('player');
+  const progress = document.getElementById('progress');
+  const speedSelect = document.getElementById('speedSelect');
+  const settingsSpeed = document.getElementById('settingsSpeed');
+  const autoplayToggle = document.getElementById('autoplayToggle');
+  const livePlaybackToggle = document.getElementById('livePlaybackToggle');
+  const liveVoiceSelect = document.getElementById('liveVoiceSelect');
+
+  let queueItems = [];
+  let currentPlayingId = null;
+  let queueRefreshTimer = null;
+  let waitingForNext = false;
+  let lastPositionSave = 0;
+  let settingsCache = null;
+  let streamMode = false;
+  let streamSegments = [];
+  let streamSegmentIndex = 0;
+  let streamPollToken = 0;
+  let browseDebounce = null;
+  let liveMode = false;
+  let liveChunks = [];
+  let liveChunkIndex = 0;
+  let liveUtterance = null;
+  let liveSpeechToken = 0;
+  let livePaused = false;
+  let liveAutoSwitching = false;
+
+  const icons = {
+    play: '▶', pause: 'Ⅱ', download: '↓', remove: '×', retry: '↻', source: '↗'
+  };
+
+  function escapeHtml(value) {
+    return String(value ?? '')
+      .replaceAll('&', '&amp;')
+      .replaceAll('<', '&lt;')
+      .replaceAll('>', '&gt;')
+      .replaceAll('"', '&quot;')
+      .replaceAll("'", '&#039;');
+  }
+
+  function toast(message, type = '') {
+    const stack = document.getElementById('toasts');
+    const el = document.createElement('div');
+    el.className = `toast ${type}`.trim();
+    el.textContent = message;
+    stack.appendChild(el);
+    setTimeout(() => el.remove(), 4300);
+  }
+
+  async function api(url, options = {}) {
+    const response = await fetch(url, options);
+    let body = null;
+    try { body = await response.json(); } catch (_) { body = {}; }
+    if (!response.ok) {
+      const error = new Error(body.error || `Request failed (${response.status})`);
+      error.status = response.status;
+      error.body = body;
+      throw error;
+    }
+    return body;
+  }
+
+  function formatSeconds(value) {
+    const total = Math.max(0, Math.floor(Number(value) || 0));
+    const hours = Math.floor(total / 3600);
+    const minutes = Math.floor((total % 3600) / 60);
+    const seconds = total % 60;
+    if (hours) return `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    return `${minutes}:${String(seconds).padStart(2, '0')}`;
+  }
+
+  function formatGeneration(seconds) {
+    if (seconds === null || seconds === undefined) return '';
+    const s = Math.round(Number(seconds));
+    if (s < 60) return `${s}s generation`;
+    const m = Math.floor(s / 60);
+    const r = s % 60;
+    return `${m}m ${r}s generation`;
+  }
+
+  function voiceLabelFor(item) {
+    if (!item.voice_used) return '';
+    if (item.engine_used === 'piper') {
+      const option = [...document.getElementById('voiceSelect').options].find(o => o.value === item.voice_used);
+      return option ? option.textContent.split(' · ')[0] : item.voice_used;
+    }
+    return item.voice_used;
+  }
+
+  function getPlaybackSpeed() {
+    const stored = Number(localStorage.getItem('webnovel-playback-speed'));
+    return [0.75, 1, 1.25, 1.5, 1.75, 2, 2.5, 3].includes(stored) ? stored : 2;
+  }
+
+  function setPlaybackSpeed(value) {
+    const rate = Number(value) || 1;
+    player.playbackRate = rate;
+    speedSelect.value = String(rate);
+    settingsSpeed.value = String(rate);
+    localStorage.setItem('webnovel-playback-speed', String(rate));
+  }
+
+  function getAutoplaySetting() {
+    const stored = localStorage.getItem('webnovel-autoplay');
+    return stored === null ? true : stored === 'true';
+  }
+
+  function setAutoplaySetting(enabled) {
+    autoplayToggle.checked = enabled;
+    localStorage.setItem('webnovel-autoplay', String(enabled));
+  }
+
+  function getLivePlaybackSetting() {
+    const stored = localStorage.getItem('webnovel-live-playback');
+    return stored === null ? false : stored === 'true';
+  }
+
+  function setLivePlaybackSetting(enabled) {
+    livePlaybackToggle.checked = enabled;
+    liveVoiceSelect.disabled = !enabled;
+    localStorage.setItem('webnovel-live-playback', String(enabled));
+    if (!enabled && liveMode) {
+      liveSpeechToken += 1;
+      window.speechSynthesis?.cancel();
+      liveMode = false;
+      livePaused = false;
+      const id = currentPlayingId;
+      if (id) setTimeout(() => playChapter(id, true), 0);
+    }
+    renderQueue();
+    updatePlayButton();
+  }
+
+  function splitLiveText(text, maxChars = 140) {
+    const clean = String(text || '').replace(/\s+/g, ' ').trim();
+    if (!clean) return [];
+    const sentences = clean.split(/(?<=[.!?…])\s+/);
+    const chunks = [];
+    let current = '';
+    for (const sentence of sentences) {
+      const parts = sentence.length > maxChars * 2
+        ? sentence.match(new RegExp(`.{1,${maxChars}}(?:\\s|$)`, 'g')) || [sentence]
+        : [sentence];
+      for (const part of parts) {
+        if (current && current.length + part.length + 1 > maxChars) {
+          chunks.push(current.trim());
+          current = part;
+        } else {
+          current = `${current} ${part}`.trim();
+        }
+      }
+    }
+    if (current) chunks.push(current.trim());
+    return chunks;
+  }
+
+  function loadBrowserVoices() {
+    if (!('speechSynthesis' in window)) {
+      livePlaybackToggle.checked = false;
+      livePlaybackToggle.disabled = true;
+      liveVoiceSelect.disabled = true;
+      return;
+    }
+    const voices = window.speechSynthesis.getVoices();
+    if (!voices.length) return;
+    const stored = localStorage.getItem('webnovel-live-voice') || '';
+    const english = voices.filter(v => /^en([_-]|$)/i.test(v.lang));
+    const ordered = [...english, ...voices.filter(v => !english.includes(v))];
+    liveVoiceSelect.innerHTML = '<option value="">System default</option>';
+    ordered.forEach(v => {
+      const option = document.createElement('option');
+      option.value = v.voiceURI;
+      option.textContent = `${v.name} · ${v.lang}${v.localService ? '' : ' · online'}`;
+      liveVoiceSelect.appendChild(option);
+    });
+    if (stored && [...liveVoiceSelect.options].some(o => o.value === stored)) liveVoiceSelect.value = stored;
+    liveVoiceSelect.disabled = !getLivePlaybackSetting();
+  }
+
+  function selectedBrowserVoice() {
+    if (!('speechSynthesis' in window)) return null;
+    const id = liveVoiceSelect.value;
+    return window.speechSynthesis.getVoices().find(v => v.voiceURI === id) || null;
+  }
+
+  function updateLiveProgress() {
+    const total = Math.max(1, liveChunks.length);
+    const pct = Math.min(100, Math.max(0, ((liveChunkIndex + 1) / total) * 100));
+    progress.value = String(Math.round((liveChunkIndex / total) * 1000));
+    progress.style.background = `linear-gradient(to right, #8b5cf6 0%, #8b5cf6 ${pct}%, #292f3c ${pct}%, #292f3c 100%)`;
+    document.getElementById('timeReadout').textContent = `Part ${Math.min(liveChunkIndex + 1, total)} / ${total}`;
+  }
+
+  function speakLiveChunk(index) {
+    if (!liveMode || !liveChunks.length || !('speechSynthesis' in window)) return;
+    liveChunkIndex = Math.max(0, Math.min(index, liveChunks.length - 1));
+    localStorage.setItem(`webnovel-live-chunk-${currentPlayingId}`, String(liveChunkIndex));
+    const token = ++liveSpeechToken;
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(liveChunks[liveChunkIndex]);
+    const voice = selectedBrowserVoice();
+    if (voice) utterance.voice = voice;
+    utterance.rate = getPlaybackSpeed();
+    utterance.pitch = 1;
+    liveUtterance = utterance;
+    livePaused = false;
+    utterance.onstart = () => { if (token === liveSpeechToken) updatePlayButton(); };
+    utterance.onend = async () => {
+      if (!liveMode || token !== liveSpeechToken) return;
+      if (liveChunkIndex + 1 < liveChunks.length) {
+        speakLiveChunk(liveChunkIndex + 1);
+      } else {
+        localStorage.removeItem(`webnovel-live-chunk-${currentPlayingId}`);
+        await waitForNextReady();
+      }
+    };
+    utterance.onerror = event => {
+      if (event.error && !['interrupted', 'canceled'].includes(event.error)) toast(`Live voice error: ${event.error}`, 'error');
+    };
+    updatePlayerMeta(currentItem(), `Temporary device voice · Piper is generating in the background`);
+    updateLiveProgress();
+    window.speechSynthesis.speak(utterance);
+  }
+
+  async function startLiveChapter(item, resume = true) {
+    if (!('speechSynthesis' in window)) return false;
+    const data = await api(`/api/text/${item.id}`);
+    liveChunks = splitLiveText(data.content);
+    if (!liveChunks.length) return false;
+    streamMode = false;
+    streamPollToken += 1;
+    player.pause();
+    player.removeAttribute('src');
+    liveMode = true;
+    const saved = resume ? Number(localStorage.getItem(`webnovel-live-chunk-${item.id}`) || 0) : 0;
+    speakLiveChunk(Number.isFinite(saved) ? saved : 0);
+    return true;
+  }
+
+  function currentItem() {
+    return queueItems.find(item => item.id === currentPlayingId) || null;
+  }
+
+  function positionKey(id) { return `webnovel-position-${id}`; }
+
+  function savePosition() {
+    if (streamMode || liveMode || !currentPlayingId || !Number.isFinite(player.currentTime)) return;
+    localStorage.setItem(positionKey(currentPlayingId), String(player.currentTime));
+    lastPositionSave = Date.now();
+  }
+
+  function clearPosition(id) {
+    localStorage.removeItem(positionKey(id));
+  }
+
+  function updatePlayerMeta(item, subtitleOverride = '') {
+    document.getElementById('nowTitle').textContent = item ? item.chapter_title : 'Nothing playing';
+    document.getElementById('nowSubtitle').textContent = item
+      ? (subtitleOverride || item.novel_title || 'Webnovel Audio')
+      : 'Choose a ready chapter from the queue.';
+    document.getElementById('downloadCurrentButton').disabled = !item || item.status !== 'ready';
+  }
+
+  function isPlayable(item) {
+    if (!item || item.status === 'failed') return false;
+    if (item.status === 'ready') return true;
+    if ((item.status === 'pending' || item.status === 'processing') && Number(item.has_content || 0) > 0) return true;
+    return getLivePlaybackSetting() && Number(item.has_content || 0) > 0;
+  }
+
+  async function loadFinalAudio(item, resume = true, progressRatio = null) {
+    if (liveMode) {
+      liveSpeechToken += 1;
+      window.speechSynthesis?.cancel();
+    }
+    liveMode = false;
+    livePaused = false;
+    streamMode = false;
+    streamSegments = [];
+    streamSegmentIndex = 0;
+    streamPollToken += 1;
+    player.src = `/api/audio/${item.id}`;
+    player.load();
+    player.addEventListener('loadedmetadata', function restoreOnce() {
+      player.removeEventListener('loadedmetadata', restoreOnce);
+      if (Number.isFinite(progressRatio) && player.duration > 0) {
+        player.currentTime = Math.max(0, Math.min(player.duration - 0.5, progressRatio * player.duration));
+      } else if (resume) {
+        const saved = Number(localStorage.getItem(positionKey(item.id)) || 0);
+        if (saved > 2 && saved < player.duration - 3) player.currentTime = saved;
+      }
+      setPlaybackSpeed(getPlaybackSpeed());
+      player.play().catch(() => {});
+    });
+  }
+
+  async function refreshStreamSegments(chapterId) {
+    const data = await api(`/api/segments/${chapterId}`);
+    streamSegments = data.segments || [];
+    return data;
+  }
+
+  async function playStreamSegment(index) {
+    if (!streamMode || index < 0 || index >= streamSegments.length) return false;
+    streamSegmentIndex = index;
+    const segment = streamSegments[index];
+    player.src = `${segment.url}?v=${segment.id}`;
+    player.load();
+    setPlaybackSpeed(getPlaybackSpeed());
+    updatePlayerMeta(currentItem(), `Live generation · audio chunk ${index + 1} · more is being generated in the background`);
+    await player.play().catch(() => {});
+    return true;
+  }
+
+  async function startStreamingChapter(item) {
+    if (liveMode) window.speechSynthesis?.cancel();
+    liveMode = false;
+    streamMode = true;
+    streamPollToken += 1;
+    const token = streamPollToken;
+    const data = await refreshStreamSegments(item.id);
+    if (!streamSegments.length) {
+      updatePlayerMeta(item, 'Starting audio… the first chunk is still generating');
+      while (streamMode && token === streamPollToken && currentPlayingId === item.id) {
+        await new Promise(resolve => setTimeout(resolve, 650));
+        const latest = await refreshStreamSegments(item.id).catch(() => null);
+        if (latest?.segments?.length) break;
+      }
+    }
+    if (streamMode && token === streamPollToken && streamSegments.length) {
+      await playStreamSegment(0);
+    }
+  }
+
+  async function playChapter(id, resume = true) {
+    let item = queueItems.find(chapter => chapter.id === Number(id));
+    if (!isPlayable(item)) return;
+
+    const switching = currentPlayingId !== item.id;
+    if (switching && !streamMode && !liveMode) savePosition();
+    currentPlayingId = item.id;
+    waitingForNext = false;
+    updatePlayerMeta(item);
+
+    // Always prefer real generated audio. Browser/device speech is only a fallback.
+    if (item.status === 'ready') {
+      if (switching || !player.src || streamMode || liveMode) await loadFinalAudio(item, resume);
+      else await player.play().catch(() => {});
+    } else if (Number(item.segment_count || 0) > 0) {
+      await startStreamingChapter(item);
+    } else {
+      if (item.status === 'pending') {
+        await api(`/api/prioritize/${item.id}`, { method: 'POST' }).catch(() => {});
+      }
+      if (getLivePlaybackSetting() && Number(item.has_content || 0) > 0) {
+        await startLiveChapter(item, resume);
+      } else {
+        await startStreamingChapter(item);
+      }
+    }
+    renderQueue();
+  }
+
+  function getPlayableNeighbor(direction) {
+    const current = currentItem();
+    if (!current) return queueItems.find(isPlayable) || null;
+    const ordered = queueItems.filter(item => item.book_id === current.book_id)
+      .sort((a, b) => a.book_position - b.book_position || a.id - b.id);
+    const currentIndex = ordered.findIndex(item => item.id === currentPlayingId);
+    for (let i = currentIndex + direction; i >= 0 && i < ordered.length; i += direction) {
+      if (isPlayable(ordered[i])) return ordered[i];
+    }
+    return null;
+  }
+
+  async function handleStreamEnded() {
+    if (!streamMode || !currentPlayingId) return false;
+    const chapterId = currentPlayingId;
+    const token = streamPollToken;
+    let nextIndex = streamSegmentIndex + 1;
+
+    while (streamMode && token === streamPollToken && currentPlayingId === chapterId) {
+      const data = await refreshStreamSegments(chapterId).catch(() => null);
+      if (streamSegments[nextIndex]) {
+        await playStreamSegment(nextIndex);
+        return true;
+      }
+      if (data?.status === 'ready') {
+        streamMode = false;
+        await refreshQueue(false);
+        clearPosition(chapterId);
+        await waitForNextReady();
+        return true;
+      }
+      updatePlayerMeta(currentItem(), `Caught up · generating the next audio chunk… ${Math.round(Number(data?.generation_progress || 0))}%`);
+      await new Promise(resolve => setTimeout(resolve, 650));
+    }
+    return true;
+  }
+
+  async function handlePlayerEnded() {
+    if (streamMode) {
+      await handleStreamEnded();
+      return;
+    }
+    await waitForNextReady();
+  }
+
+  async function waitForNextReady() {
+    if (!currentPlayingId || !getAutoplaySetting() || waitingForNext) return;
+    waitingForNext = true;
+    const finishedId = currentPlayingId;
+    clearPosition(finishedId);
+
+    while (waitingForNext && currentPlayingId === finishedId && getAutoplaySetting()) {
+      try {
+        const next = await api(`/api/next-in-queue/${finishedId}`);
+        const nextId = next.next_id ?? next.id ?? null;
+        if (!nextId) {
+          updatePlayerMeta(currentItem(), 'End of queue');
+          waitingForNext = false;
+          return;
+        }
+        if ((getLivePlaybackSetting() && Number(next.has_content || 0) > 0) || next.status === 'ready' || Number(next.segment_count || 0) > 0) {
+          await refreshQueue(false);
+          waitingForNext = false;
+          await playChapter(nextId, false);
+          return;
+        }
+        updatePlayerMeta(currentItem(), 'Waiting for the first playable audio chunk of the next chapter…');
+      } catch (_) {
+        updatePlayerMeta(currentItem(), 'Waiting for the next chapter…');
+      }
+      await new Promise(resolve => setTimeout(resolve, 800));
+    }
+    waitingForNext = false;
+  }
+
+  function updatePlayButton() {
+    const paused = liveMode ? livePaused : player.paused;
+    document.getElementById('playButton').textContent = paused ? icons.play : icons.pause;
+    document.getElementById('playButton').title = paused ? 'Play' : 'Pause';
+  }
+
+  function updateProgress() {
+    if (liveMode) { updateLiveProgress(); return; }
+    const duration = Number.isFinite(player.duration) ? player.duration : 0;
+    const current = Number.isFinite(player.currentTime) ? player.currentTime : 0;
+    progress.value = duration > 0 ? String(Math.round((current / duration) * 1000)) : '0';
+    document.getElementById('timeReadout').textContent = `${formatSeconds(current)} / ${formatSeconds(duration)}`;
+    const pct = duration > 0 ? (current / duration) * 100 : 0;
+    progress.style.background = `linear-gradient(to right, #8b5cf6 0%, #8b5cf6 ${pct}%, #292f3c ${pct}%, #292f3c 100%)`;
+    if (Date.now() - lastPositionSave > 2500) savePosition();
+  }
+
+  async function loadVoices(engine, preferredVoice = null) {
+    const select = document.getElementById('voiceSelect');
+    select.disabled = true;
+    select.innerHTML = '<option>Loading voices…</option>';
+    try {
+      const voices = await api(`/api/voices?engine=${encodeURIComponent(engine)}`);
+      select.innerHTML = '';
+      voices.forEach(voice => {
+        const option = document.createElement('option');
+        if (typeof voice === 'string') {
+          option.value = voice;
+          option.textContent = voice;
+        } else {
+          option.value = voice.id;
+          option.textContent = voice.label || voice.id;
+        }
+        select.appendChild(option);
+      });
+      if (preferredVoice && [...select.options].some(o => o.value === preferredVoice)) {
+        select.value = preferredVoice;
+      }
+    } catch (error) {
+      select.innerHTML = '<option value="">Unable to load voices</option>';
+      toast(error.message, 'error');
+    } finally {
+      select.disabled = false;
+    }
+  }
+
+  function updateEngineHelp() {
+    const engine = document.getElementById('engineSelect').value;
+    const help = document.getElementById('engineHelp');
+    if (engine === 'piper') {
+      help.textContent = 'Piper now uses fast-start streaming: the first small audio chunk becomes playable while the rest of the chapter keeps generating.';
+    } else if (engine === 'espeak') {
+      help.textContent = 'eSpeak NG is the instant mode. It generates extremely quickly and also streams immediately, but the voice is noticeably more robotic than Piper.';
+    } else if (settingsCache?.kokoro_available) {
+      help.textContent = 'Kokoro is running and also supports fast-start chunk playback, but total generation remains much heavier than Piper.';
+    } else {
+      help.textContent = 'Kokoro is optional and currently stopped to save resources. Start it with: docker compose --profile kokoro up -d';
+    }
+  }
+
+  function updateEnginePill() {
+    const pill = document.getElementById('enginePill');
+    const engine = settingsCache?.engine || 'piper';
+    pill.querySelector('span:last-child').textContent = engine === 'piper' ? 'Piper · streaming mode' : (engine === 'espeak' ? 'eSpeak · instant mode' : 'Kokoro · natural mode');
+  }
+
+  async function loadSettings() {
+    try {
+      settingsCache = await api('/api/settings');
+      const engineSelect = document.getElementById('engineSelect');
+      engineSelect.value = settingsCache.engine;
+      const preferred = settingsCache.engine === 'piper' ? settingsCache.piper_voice : (settingsCache.engine === 'espeak' ? settingsCache.espeak_voice : settingsCache.kokoro_voice);
+      await loadVoices(settingsCache.engine, preferred);
+      updateEngineHelp();
+      updateEnginePill();
+    } catch (error) {
+      toast(error.message, 'error');
+    }
+  }
+
+  async function saveSettings() {
+    const button = document.getElementById('saveSettingsButton');
+    const savedState = document.getElementById('savedState');
+    button.disabled = true;
+    const engine = document.getElementById('engineSelect').value;
+    const voice = document.getElementById('voiceSelect').value;
+    const payload = { engine };
+    if (engine === 'piper') payload.piper_voice = voice;
+    else if (engine === 'espeak') payload.espeak_voice = voice;
+    else payload.kokoro_voice = voice;
+
+    setPlaybackSpeed(settingsSpeed.value);
+    setAutoplaySetting(autoplayToggle.checked);
+
+    try {
+      settingsCache = await api('/api/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      updateEnginePill();
+      updateEngineHelp();
+      savedState.textContent = 'Saved';
+      setTimeout(() => { savedState.textContent = ''; }, 1800);
+      toast('Default generation settings saved. Existing jobs keep their pinned voice.', 'success');
+    } catch (error) {
+      toast(error.message, 'error');
+    } finally {
+      button.disabled = false;
+    }
+  }
+
+
+  async function applyVoiceToQueued() {
+    const button = document.getElementById('applyQueueVoiceButton');
+    const engine = document.getElementById('engineSelect').value;
+    const voice = document.getElementById('voiceSelect').value;
+    button.disabled = true;
+    try {
+      const result = await api('/api/apply-profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ engine, voice })
+      });
+      toast(`Applied this voice to ${result.changed || 0} queued download job(s). Chapters already generating were not interrupted.`, 'success');
+      await refreshQueue(false);
+    } catch (error) {
+      toast(error.message, 'error');
+    } finally {
+      button.disabled = false;
+    }
+  }
+
+  async function browseWebsite(urlOverride = null) {
+    const input = document.getElementById('urlInput');
+    const lines = input.value.split(/\r?\n/).map(v => v.trim()).filter(Boolean);
+    const url = (urlOverride || (lines.length === 1 ? lines[0] : '')).trim();
+    if (!url) {
+      toast('Paste one website or chapter URL to browse it.', 'error');
+      return;
+    }
+    const panel = document.getElementById('browserPanel');
+    const links = document.getElementById('browserLinks');
+    const title = document.getElementById('browserTitle');
+    const summary = document.getElementById('browserSummary');
+    const address = document.getElementById('browserAddress');
+    const open = document.getElementById('browserOpenSource');
+    panel.hidden = false;
+    address.value = url;
+    title.textContent = 'Loading website…';
+    summary.textContent = 'Finding chapter links on this page.';
+    links.innerHTML = '<div class="empty-state"><span class="spinner"></span>Loading page…</div>';
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    try {
+      const data = await api('/api/browse', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url })
+      });
+      address.value = data.url || url;
+      open.href = data.url || url;
+      title.textContent = data.title || data.host || 'Website browser';
+      const count = data.links?.length || 0;
+      summary.textContent = data.chapter_links_found
+        ? `${data.chapter_links_found} likely chapter link${data.chapter_links_found === 1 ? '' : 's'} found. Click Queue on any chapter.`
+        : `${count} same-site link${count === 1 ? '' : 's'} found. This page did not expose obvious chapter labels.`;
+      if (!count) {
+        links.innerHTML = '<div class="empty-state"><strong>No links found</strong>Try the novel table-of-contents page instead of a chapter page.</div>';
+        return;
+      }
+      links.innerHTML = data.links.map(link => `
+        <div class="browser-link-row">
+          <div>
+            <div class="browser-link-title" title="${escapeHtml(link.title)}">${escapeHtml(link.title)}</div>
+            <div class="browser-link-url" title="${escapeHtml(link.url)}">${escapeHtml(link.url)}</div>
+          </div>
+          <div class="browser-link-actions">
+            <button class="secondary-btn" data-browser-action="queue" data-url="${escapeHtml(link.url)}">Queue</button>
+            <button class="secondary-btn" data-browser-action="browse" data-url="${escapeHtml(link.url)}">Browse</button>
+            <a class="icon-btn" href="${escapeHtml(link.url)}" target="_blank" rel="noopener" title="Open original">↗</a>
+          </div>
+        </div>`).join('');
+    } catch (error) {
+      title.textContent = 'Could not load website';
+      summary.textContent = error.message;
+      links.innerHTML = '<div class="empty-state"><strong>Page unavailable</strong>The site may require JavaScript, login, or anti-bot verification.</div>';
+      toast(error.message, 'error');
+    }
+  }
+
+  async function queueBrowserUrl(url) {
+    try {
+      const result = await api('/api/add', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url })
+      });
+      toast(`Queued ${result.chapter_title || 'chapter'}.`, 'success');
+      await refreshQueue(false);
+    } catch (error) {
+      if (error.status === 409) toast('That chapter is already in the queue.');
+      else toast(error.message, 'error');
+    }
+  }
+
+  async function queueChapters() {
+    const input = document.getElementById('urlInput');
+    const button = document.getElementById('queueButton');
+    const lines = input.value.split(/\r?\n/).map(v => v.trim()).filter(Boolean);
+    if (!lines.length) {
+      toast('Paste at least one chapter URL.', 'error');
+      return;
+    }
+
+    button.disabled = true;
+    button.innerHTML = '<span class="spinner"></span>Adding…';
+    try {
+      let result;
+      if (lines.length > 1) {
+        result = await api('/api/add-batch', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ urls: lines })
+        });
+      } else {
+        const follow = document.getElementById('queueMode').value === 'follow';
+        const count = follow ? Number(document.getElementById('followCount').value) : 1;
+        result = await api('/api/add-and-follow', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: lines[0], count })
+        });
+      }
+
+      input.value = '';
+      if(result.queued){toast(`Queued a persistent import job for ${result.requested} chapters. Monitor it in Background Jobs.`, 'success');}
+      const added = result.added?.length || 0;
+      const skipped = result.skipped || 0;
+      const found = result.found ?? (added + skipped);
+      const requested = result.requested ?? found;
+
+      if (added) {
+        const duplicateNote = skipped ? ` ${skipped} already queued.` : '';
+        toast(`Queued ${added} new chapter${added === 1 ? '' : 's'}.${duplicateNote}`, 'success');
+      } else if (skipped) {
+        toast('Those chapters are already in the queue.');
+      }
+
+      if (requested > found && result.stopped_reason) {
+        toast(`Found ${found} of ${requested}. ${result.stopped_reason}`, 'error');
+      } else if (result.errors?.length) {
+        toast(`${result.errors.length} URL(s) could not be added.`, 'error');
+      }
+      await refreshQueue();
+    } catch (error) {
+      toast(error.message, 'error');
+    } finally {
+      button.disabled = false;
+      button.textContent = 'Queue chapters';
+    }
+  }
+
+  async function deleteChapter(id) {
+    try {
+      await api(`/api/delete/${id}`, { method: 'DELETE' });
+      if (currentPlayingId === Number(id)) {
+        player.pause();
+        player.removeAttribute('src');
+        currentPlayingId = null;
+        streamMode = false;
+        streamPollToken += 1;
+        updatePlayerMeta(null);
+      }
+      await refreshQueue();
+    } catch (error) {
+      toast(error.message, 'error');
+    }
+  }
+
+  async function retryChapter(id) {
+    try {
+      await api(`/api/retry/${id}`, { method: 'POST' });
+      toast('Chapter queued for another generation attempt.', 'success');
+      await refreshQueue();
+    } catch (error) {
+      toast(error.message, 'error');
+    }
+  }
+
+  async function deleteNovel(title) {
+    if (!confirm(`Remove all queued chapters for “${title}”?`)) return;
+    try {
+      await api('/api/delete-novel', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ novel_title: title })
+      });
+      const current = currentItem();
+      if (current?.novel_title === title) {
+        player.pause();
+        player.removeAttribute('src');
+        currentPlayingId = null;
+        streamMode = false;
+        streamPollToken += 1;
+        updatePlayerMeta(null);
+      }
+      await refreshQueue();
+    } catch (error) {
+      toast(error.message, 'error');
+    }
+  }
+
+  function generationProgress(item) {
+    if (item.status === 'ready') return 100;
+    if (item.status !== 'processing') return 0;
+    const value = Number(item.generation_progress || 0);
+    return Math.max(0, Math.min(99, Math.round(value)));
+  }
+
+  function generationProgressMarkup(item) {
+    if (item.status !== 'processing') return '';
+    const value = generationProgress(item);
+    return `
+      <div class="generation-progress" aria-label="Generation progress ${value}%">
+        <div class="generation-progress-track">
+          <div class="generation-progress-fill" style="width:${value}%"></div>
+        </div>
+        <span class="generation-progress-value">${value}%</span>
+      </div>
+    `;
+  }
+
+  function chapterMeta(item) {
+    const parts = [];
+    if (item.status === 'pending') parts.push('Queued for generation');
+    if (item.status === 'processing') parts.push(Number(item.segment_count || 0) > 0 ? `Generating audio… ${generationProgress(item)}% · playable now` : `Generating first playable chunk… ${generationProgress(item)}%`);
+    if (item.status === 'failed') parts.push(item.error_message ? `Failed: ${item.error_message}` : 'Generation failed');
+    if (item.status === 'ready') {
+      if (item.engine_used) parts.push(item.engine_used === 'piper' ? 'Piper' : (item.engine_used === 'espeak' ? 'eSpeak' : 'Kokoro'));
+    else if (item.requested_engine) parts.push(`Queued: ${item.requested_engine}`);
+      const voice = voiceLabelFor(item);
+      if (voice) parts.push(voice);
+      const generation = formatGeneration(item.generation_seconds);
+      if (generation) parts.push(generation);
+    }
+    return parts.join(' · ');
+  }
+
+  function renderQueue() {
+    const container = document.getElementById('queue');
+    const filter = document.getElementById('queueSearch').value.trim().toLowerCase();
+    const visibleItems = queueItems.filter(item => {
+      if (!filter) return true;
+      return `${item.novel_title} ${item.chapter_title}`.toLowerCase().includes(filter);
+    });
+
+    document.getElementById('queueCount').textContent = `${queueItems.length} chapter${queueItems.length === 1 ? '' : 's'}`;
+    document.getElementById('playFirstButton').disabled = !queueItems.some(isPlayable);
+
+    if (!visibleItems.length) {
+      container.innerHTML = queueItems.length
+        ? '<div class="empty-state"><strong>No matches</strong>Change the queue filter to show your chapters.</div>'
+        : '<div class="empty-state"><strong>Your queue is empty</strong>Paste a chapter URL above and queue the next chapters automatically.</div>';
+      return;
+    }
+
+    const grouped = new Map();
+    visibleItems.forEach(item => {
+      if (!grouped.has(item.novel_title)) grouped.set(item.novel_title, []);
+      grouped.get(item.novel_title).push(item);
+    });
+
+    let html = '';
+    for (const [novelTitle, items] of grouped) {
+      const ready = items.filter(item => item.status === 'ready').length;
+      const playable = items.filter(isPlayable).length;
+      const processing = items.filter(item => item.status === 'processing' || item.status === 'pending').length;
+      html += `
+        <article class="novel-card">
+          <div class="novel-header">
+            <div class="novel-name">
+              <strong title="${escapeHtml(novelTitle)}">${escapeHtml(novelTitle)}</strong>
+              <span>${items.length} chapter${items.length === 1 ? '' : 's'} · ${ready} ready${processing ? ` · ${processing} generating/queued` : ''}</span>
+            </div>
+            <div class="novel-actions">
+              <button class="secondary-btn" data-action="play-novel" data-novel="${escapeHtml(novelTitle)}" ${playable ? '' : 'disabled'}>Play now</button>
+              <a class="secondary-btn" href="/api/epub/${encodeURIComponent(novelTitle)}">Download EPUB</a>
+              <button class="secondary-btn" data-action="delete-novel" data-novel="${escapeHtml(novelTitle)}">Remove novel</button>
+            </div>
+          </div>
+          <div class="chapter-list">
+      `;
+
+      for (const item of items) {
+        const isPlaying = item.id === currentPlayingId;
+        html += `
+          <div class="chapter-row ${isPlaying ? 'playing' : ''}" data-chapter-id="${item.id}">
+            <div class="chapter-main">
+              <span class="status-dot ${escapeHtml(item.status)}"></span>
+              <div class="chapter-text">
+                <div class="chapter-title" title="${escapeHtml(item.chapter_title)}">${escapeHtml(item.chapter_title)}</div>
+                <div class="chapter-meta" title="${escapeHtml(chapterMeta(item))}">${escapeHtml(chapterMeta(item))}</div>
+                ${generationProgressMarkup(item)}
+              </div>
+            </div>
+            <div class="chapter-actions">
+              <span class="status-chip ${escapeHtml(item.status)}">${item.status === 'processing' ? `${generationProgress(item)}%` : escapeHtml(item.status)}</span>
+              ${isPlayable(item) ? `<button class="icon-btn" data-action="play" data-id="${item.id}" title="${item.status === 'processing' ? 'Listen now while generating' : 'Play'}">${icons.play}</button>` : ''}
+              ${item.status === 'processing' && Number(item.segment_count || 0) > 0 ? '<span class="listen-now-chip">Listen now</span>' : ''}
+              ${item.status === 'ready' ? `<a class="icon-btn" href="/api/download/${item.id}" title="Download audio">${icons.download}</a>` : ''}
+              ${item.status === 'failed' ? `<button class="icon-btn" data-action="retry" data-id="${item.id}" title="Retry">${icons.retry}</button>` : ''}
+              ${item.source_url ? `<a class="icon-btn" href="${escapeHtml(item.source_url)}" target="_blank" rel="noopener" title="Open source chapter">${icons.source}</a>` : ''}
+              <button class="icon-btn danger" data-action="delete" data-id="${item.id}" title="Remove">${icons.remove}</button>
+            </div>
+          </div>
+        `;
+      }
+      html += '</div></article>';
+    }
+    container.innerHTML = html;
+  }
+
+  async function refreshQueue(showErrors = true) {
+    try {
+      queueItems = await api('/api/queue');
+      renderQueue();
+      const current = currentItem();
+      if (current && liveMode && current.status === 'ready' && !liveAutoSwitching) {
+        liveAutoSwitching = true;
+        const ratio = liveChunks.length ? Math.min(0.995, Math.max(0, liveChunkIndex / liveChunks.length)) : 0;
+        updatePlayerMeta(current, 'Piper audio is ready · switching from the temporary device voice…');
+        try {
+          await loadFinalAudio(current, false, ratio);
+        } finally {
+          liveAutoSwitching = false;
+        }
+      } else if (current) {
+        updatePlayerMeta(current, waitingForNext ? 'Waiting for the next chapter to finish generating…' : '');
+      }
+    } catch (error) {
+      if (showErrors) toast(error.message, 'error');
+    }
+  }
+
+  document.getElementById('queue').addEventListener('click', async event => {
+    const target = event.target.closest('[data-action]');
+    if (!target) return;
+    const action = target.dataset.action;
+    if (action === 'play') await playChapter(Number(target.dataset.id));
+    if (action === 'delete') await deleteChapter(Number(target.dataset.id));
+    if (action === 'retry') await retryChapter(Number(target.dataset.id));
+    if (action === 'delete-novel') await deleteNovel(target.dataset.novel);
+    if (action === 'play-novel') {
+      const first = queueItems.filter(item => item.novel_title === target.dataset.novel && isPlayable(item))
+        .sort((a, b) => a.book_position - b.book_position || a.id - b.id)[0];
+      if (first) await playChapter(first.id);
+    }
+  });
+
+  document.getElementById('engineSelect').addEventListener('change', async event => {
+    const engine = event.target.value;
+    const preferred = engine === 'piper' ? settingsCache?.piper_voice : (engine === 'espeak' ? settingsCache?.espeak_voice : settingsCache?.kokoro_voice);
+    await loadVoices(engine, preferred);
+    updateEngineHelp();
+  });
+
+  document.getElementById('browseButton').addEventListener('click', () => browseWebsite());
+  document.getElementById('browserGoButton').addEventListener('click', () => browseWebsite(document.getElementById('browserAddress').value));
+  document.getElementById('browserCloseButton').addEventListener('click', () => { document.getElementById('browserPanel').hidden = true; });
+  document.getElementById('browserAddress').addEventListener('keydown', event => {
+    if (event.key === 'Enter') { event.preventDefault(); browseWebsite(event.target.value); }
+  });
+  document.getElementById('browserLinks').addEventListener('click', async event => {
+    const target = event.target.closest('[data-browser-action]');
+    if (!target) return;
+    if (target.dataset.browserAction === 'queue') await queueBrowserUrl(target.dataset.url);
+    if (target.dataset.browserAction === 'browse') await browseWebsite(target.dataset.url);
+  });
+
+  document.getElementById('queueButton').addEventListener('click', queueChapters);
+  document.getElementById('saveSettingsButton').addEventListener('click', saveSettings);
+  document.getElementById('applyQueueVoiceButton').addEventListener('click', applyVoiceToQueued);
+  document.getElementById('queueSearch').addEventListener('input', renderQueue);
+  document.getElementById('playFirstButton').addEventListener('click', async () => {
+    const first = queueItems.find(isPlayable);
+    if (first) await playChapter(first.id);
+  });
+
+  document.getElementById('urlInput').addEventListener('input', event => {
+    clearTimeout(browseDebounce);
+    const lines = event.target.value.split(/\r?\n/).map(v => v.trim()).filter(Boolean);
+    if (lines.length === 1 && /^https?:\/\//i.test(lines[0])) {
+      browseDebounce = setTimeout(() => browseWebsite(lines[0]), 900);
+    }
+  });
+
+  document.getElementById('urlInput').addEventListener('keydown', event => {
+    if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
+      event.preventDefault();
+      queueChapters();
+    }
+  });
+
+  document.getElementById('playButton').addEventListener('click', async () => {
+    if (!currentPlayingId) {
+      const first = queueItems.find(isPlayable);
+      if (first) await playChapter(first.id);
+      return;
+    }
+    if (liveMode) {
+      if (livePaused) {
+        livePaused = false;
+        speakLiveChunk(liveChunkIndex);
+      } else {
+        livePaused = true;
+        liveSpeechToken += 1;
+        window.speechSynthesis.cancel();
+        updatePlayButton();
+      }
+      return;
+    }
+    if (player.paused) await player.play().catch(() => {});
+    else player.pause();
+  });
+
+  document.getElementById('backButton').addEventListener('click', () => {
+    if (liveMode) { speakLiveChunk(Math.max(0, liveChunkIndex - 1)); return; }
+    player.currentTime = Math.max(0, (player.currentTime || 0) - 15);
+  });
+
+  document.getElementById('forwardButton').addEventListener('click', () => {
+    if (liveMode) { speakLiveChunk(Math.min(liveChunks.length - 1, liveChunkIndex + 1)); return; }
+    const duration = Number.isFinite(player.duration) ? player.duration : Infinity;
+    player.currentTime = Math.min(duration, (player.currentTime || 0) + 15);
+  });
+
+  document.getElementById('prevButton').addEventListener('click', async () => {
+    const previous = getPlayableNeighbor(-1);
+    if (previous) await playChapter(previous.id);
+  });
+
+  document.getElementById('nextButton').addEventListener('click', async () => {
+    const next = getPlayableNeighbor(1);
+    if (next) await playChapter(next.id, false);
+  });
+
+  document.getElementById('downloadCurrentButton').addEventListener('click', () => {
+    if (currentPlayingId) window.location.href = `/api/download/${currentPlayingId}`;
+  });
+
+  progress.addEventListener('input', () => {
+    if (liveMode && liveChunks.length) {
+      const index = Math.min(liveChunks.length - 1, Math.floor((Number(progress.value) / 1000) * liveChunks.length));
+      speakLiveChunk(index);
+      return;
+    }
+    if (!Number.isFinite(player.duration) || player.duration <= 0) return;
+    player.currentTime = (Number(progress.value) / 1000) * player.duration;
+  });
+
+  speedSelect.addEventListener('change', () => { setPlaybackSpeed(speedSelect.value); });
+  settingsSpeed.addEventListener('change', () => { setPlaybackSpeed(settingsSpeed.value); });
+  autoplayToggle.addEventListener('change', () => setAutoplaySetting(autoplayToggle.checked));
+  livePlaybackToggle.addEventListener('change', () => setLivePlaybackSetting(livePlaybackToggle.checked));
+  liveVoiceSelect.addEventListener('change', () => {
+    localStorage.setItem('webnovel-live-voice', liveVoiceSelect.value);
+    // Browser TTS cannot reliably swap voices mid-utterance without restarting.
+    // Apply it to the next short phrase instead so playback is not interrupted.
+  });
+  if ('speechSynthesis' in window) window.speechSynthesis.onvoiceschanged = loadBrowserVoices;
+
+  player.addEventListener('play', updatePlayButton);
+  player.addEventListener('pause', updatePlayButton);
+  player.addEventListener('timeupdate', updateProgress);
+  player.addEventListener('durationchange', updateProgress);
+  player.addEventListener('ratechange', () => {
+    speedSelect.value = String(player.playbackRate);
+  });
+  player.addEventListener('ended', handlePlayerEnded);
+  window.addEventListener('beforeunload', savePosition);
+
+  async function initialize() {
+    // v6 defaulted the browser/device voice fallback on and persisted that in
+    // localStorage. Turn that old default off once so upgrading users actually
+    // hear Piper. After this one-time migration, the toggle is entirely yours.
+    if (!localStorage.getItem('webnovel-v61-device-fallback-migrated')) {
+      localStorage.setItem('webnovel-live-playback', 'false');
+      localStorage.setItem('webnovel-v61-device-fallback-migrated', '1');
+    }
+    setPlaybackSpeed(getPlaybackSpeed());
+    setAutoplaySetting(getAutoplaySetting());
+    setLivePlaybackSetting(getLivePlaybackSetting());
+    loadBrowserVoices();
+    await loadSettings();
+    await refreshQueue();
+    queueRefreshTimer = setInterval(() => refreshQueue(false), 1000);
+    updatePlayButton();
+    updateProgress();
+  }
+
+  initialize();
+</script>
+</body>
+</html>
