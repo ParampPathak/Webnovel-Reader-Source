@@ -74,9 +74,12 @@ Runtime data lives under `DATA_DIR`: SQLite, imported books/text, covers, genera
 
 ## Docker
 
-Copy `.env.example` to `.env` and choose local storage locations. The supplied Compose file starts the web application, Edge/import worker and local-synthesis worker. Optional Kokoro is an explicitly enabled profile.
+Clone this repository (GitHub authentication is required while it is private), then copy `.env.example` to `.env` and choose local storage locations. The supplied Compose file starts the web application, Edge/import worker and local-synthesis worker. Optional Kokoro is an explicitly enabled profile.
 
 ```sh
+git clone https://github.com/ParampPathak/Webnovel-Reader-Source.git
+cd Webnovel-Reader-Source
+cp .env.example .env
 docker compose -f compose.example.yaml up -d --build
 ```
 
@@ -159,9 +162,9 @@ START_TTS_WORKERS=0 AUDIO_CACHE_CLEANUP_ENABLED=0 python -m unittest discover -s
 
 Cache destruction tests use synthetic temporary data, never production. Optional workstation pagination checks are in `tools/verify_paginated_browser.py`; they require private disposable staging on localhost port 15000 and an existing test library/cache. Do not aim mutation tests at production. Native browser acceptance must be repeated for a candidate's exact served assets before deploying UI changes; unit tests alone are insufficient.
 
-GitHub Actions runs lightweight backend/frontend and syntax checks against isolated fixtures. It neither connects to a private server nor deploys production. Real speech-service tests are separately controlled; CI does not synthesize books or incur service charges.
+GitHub Actions runs the full backend/frontend suite and syntax checks against isolated fixtures, audits resolved Python dependencies, builds the Docker image, and boots it without network access to verify HTTP health, an original fixture EPUB, chapter access, reader rendering and reading-progress persistence across restart. A separate macOS job runs Swift tests and compiles the iOS app without signing credentials. It neither connects to a private server nor deploys production. Real speech-service tests are separately controlled; CI does not synthesize books or incur service charges. See [source validation runs](https://github.com/ParampPathak/Webnovel-Reader-Source/actions).
 
-Use an isolated Linux environment for backend tests, with development-only data and backup paths. Large fixture imports deliberately retain resource guards and can stop under memory or swap pressure. The complete suite, rather than only selected classes, runs on the hosted CI runner. A fresh Docker installation is documented above but is not claimed as newly tested by this documentation update.
+Use an isolated Linux environment for backend tests, with development-only data and backup paths. Large fixture imports deliberately retain resource guards and can stop under memory or swap pressure. The complete suite, rather than only selected classes, runs on the hosted CI runner. The CI runtime check uses disposable container storage and disables speech workers and background schedulers; it does not verify live source websites, online narration, model downloads or Apple device distribution.
 
 ## Deployment and rollback
 
