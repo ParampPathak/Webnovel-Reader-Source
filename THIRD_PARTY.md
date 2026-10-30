@@ -1,6 +1,6 @@
 # Dependency and content notice
 
-The repository's existing MIT license is retained, not replaced. Application source and the procedural SVG icon are independently authored; no Readest source/assets, private book contents, generated audio, voice models or third-party fonts are committed. Documentation screenshots show the separate static demo with original sample fiction and cover artwork, not private-library content. Their sample voice and importer are explicitly demonstration-only.
+The repository's existing MIT license is retained, not replaced. Application source and the procedurally rendered native app icon are independently authored; no Readest source/assets, private book contents, generated audio, voice models or third-party fonts are committed. Web documentation screenshots show the separate static demo with original sample fiction and cover artwork. Native screenshots are genuine isolated iOS Simulator captures using original sample books, procedural covers and synthetic cached test audio. Neither set contains private-library content. Web sample narration/importing and native synthetic audio are demonstration fixtures, not evidence of live speech-service availability.
 
 Python packages are installed separately from `requirements.txt`. Reviewed installed metadata:
 

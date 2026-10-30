@@ -11,6 +11,8 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -20,6 +22,10 @@ jobs:
           node-version: '22'
       - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg espeak-ng
       - run: pip install -r requirements.txt
+      - name: Resolved dependency vulnerability audit
+        run: |
+          pip install pip-audit
+          pip-audit --progress-spinner off
       - name: Python syntax
         run: python -m compileall -q -x '/\.git/' .
       - name: Isolated backend and security regressions
@@ -36,11 +42,23 @@ jobs:
         run: python deployment/check_tracked_files.py
       - name: Docker source completeness
         run: docker build -t webnovel-ci .
+      - name: Fresh-container runtime and persistence
+        run: |
+          docker compose -f compose.example.yaml config --quiet
+          docker run -d --name source-smoke --network none --cpus 1 --memory 512m --pids-limit 96 -e START_TTS_WORKERS=0 -e AUDIO_CACHE_CLEANUP_ENABLED=0 -e CHAPTER_UPDATES_ENABLED=0 webnovel-ci
+          docker exec source-smoke python -m tests.container_smoke
+          docker restart source-smoke
+          docker exec source-smoke python -m tests.container_smoke verify
+      - name: Remove isolated smoke container
+        if: always()
+        run: docker rm -f source-smoke || true
   native-core:
     runs-on: macos-15
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - name: Portable Swift checkpoint and trust tests
         run: swift test --package-path NativeReader
       - name: Unsigned iOS compile (no Apple credentials)
