@@ -1,6 +1,6 @@
 # Webnovel Reader
 
-Web and native iPhone reading, durable listening checkpoints, and a self-hosted narration pipeline. [Portfolio case study](https://parampathak.com/projects/webnovel-reader/) · [Isolated browser demo](https://reader.parampathak.com/) · [Snapshot provenance](docs/PROVENANCE.md)
+Web and native iPhone reading, durable listening checkpoints, and a self-hosted narration pipeline. [Portfolio case study](https://parampathak.com/projects/webnovel-reader/) Â· [Isolated browser demo](https://reader.parampathak.com/) Â· [Snapshot provenance](docs/PROVENANCE.md)
 
 A self-hosted EPUB and webnovel reader with paginated reading, persistent progress, and on-demand audiobook narration. Python/Flask serves the library and durable job queue; a small JavaScript reader handles pagination and a single persistent audio player.
 
@@ -23,7 +23,7 @@ These are real captures of the independent demo, not private production-library 
 
 The Swift application combines WKWebView with AVQueuePlayer, background audio, lock-screen controls, protected cached segments and an append-only listening journal. Reading and listening checkpoints have separate ownership. Sequence checks and durable acknowledgement handling prevent a stale synchronization response from rewinding native playback.
 
-| Library · iPhone simulator | Reading · iPhone simulator | Native audio · iPhone simulator |
+| Library Â· iPhone simulator | Reading Â· iPhone simulator | Native audio Â· iPhone simulator |
 | --- | --- | --- |
 | ![Native library with original demo covers](docs/screenshots/native-library.webp) | ![Original fiction in the native reader](docs/screenshots/native-reading.webp) | ![Native player with cached synthetic test audio](docs/screenshots/native-expanded-audio.webp) |
 
