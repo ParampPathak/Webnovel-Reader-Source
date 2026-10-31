@@ -33,7 +33,7 @@ The web application and audio/import workers run in Docker on Ubuntu Server. The
 
 ## Publication and security status
 
-This candidate is prepared for review and remains private until the owner explicitly approves publication. Its source was copied from the real project, not replaced by a superficial sample. See [provenance](docs/PROVENANCE.md) for the honest snapshot boundary.
+This repository is a reviewed, sanitized source snapshot of the real application. The original development repository and its operational history remain private. See [provenance](docs/PROVENANCE.md) for the snapshot boundary and the separate source-validation workflow below for test evidence.
 
 The original-code MIT license is retained. It does not relicense dependencies, books, artwork, voice models or generated audio. EbookLib, Piper and edge-tts have separate copyleft licenses; consult [third-party notices](THIRD_PARTY.md) before distributing a combined runtime or container. No production container, signing material or personal content is published by this snapshot.
 
@@ -49,7 +49,7 @@ The original-code MIT license is retained. It does not relicense dependencies, b
 - Headphones OFF hands control to manual reading: the next headphones ON starts from the current reading anchor. Pausing with headphones ON instead retains the listening cursor. Reader mini-player titles expand controls; library mini-player titles return to the listening location.
 - New Edge recordings retain genuine word-boundary cues tied to their audio checksum and text. The media clock drives highlighting and page following. Older caches without cues remain usable at chunk precision; they are not silently regenerated or given estimated word timings. Starting inside such a chunk can replay its preceding text.
 - Optional per-book automatic new-chapter imports from supported public FreeWebNovel and Royal Road catalogs. Existing books remain off until selected.
-- Source-aware metadata, manual overrides, live discovery status, and identity-safe chapter catalog updates. Manual NovelFull importing is supported separately from the automatic updater; see [source support and restrictions](SOURCE_SUPPORT.md).
+- Source-aware metadata, manual overrides, live discovery status, and identity-safe chapter catalog updates. Manual NovelFull importing is supported separately from the automatic updater; see [automatic import support and restrictions](#automatic-new-chapter-imports).
 - Full-height Contents with a 100-row window over long chapter lists; scrolling loads the relevant window rather than rendering thousands of rows.
 - Reusable generated-audio cache and conservative daily maintenance with a configurable 20 GiB default budget, dry-run, bounded batches, and durable interruption recovery.
 
@@ -74,7 +74,7 @@ Runtime data lives under `DATA_DIR`: SQLite, imported books/text, covers, genera
 
 ## Docker
 
-Clone this repository (GitHub authentication is required while it is private), then copy `.env.example` to `.env` and choose local storage locations. The supplied Compose file starts the web application, Edge/import worker and local-synthesis worker. Optional Kokoro is an explicitly enabled profile.
+Clone this repository, then copy `.env.example` to `.env` and choose local storage locations. The supplied Compose file starts the web application, Edge/import worker and local-synthesis worker. Optional Kokoro is an explicitly enabled profile.
 
 ```sh
 git clone https://github.com/ParampPathak/Webnovel-Reader-Source.git
